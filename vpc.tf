@@ -1,11 +1,11 @@
 resource "aws_vpc" "wordpress_vpc" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags = {
-    Name        = "project-wordpress-vpc"
-    Environment = "production"
-    Project     = "wordpress-migration"
-    ManagedBy   = "terraform"
-  }
+  tags = merge(
+    local.tags,
+    {
+      Name = "project-wordpress-vpc"
+    }
+  )
 }
