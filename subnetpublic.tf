@@ -25,3 +25,14 @@ resource "aws_subnet" "wordpress_subnet_public_1b" {
     }
   )
 }
+
+resource "aws_route_table_association" "public_route_table_assoc_1a" {
+  subnet_id      = aws_subnet.wordpress_subnet_public_1a.id
+  route_table_id = aws_route_table.wordpress_public_route_table.id
+}
+
+
+resource "aws_route_table_association" "public_route_table_assoc_1b" {
+  subnet_id      = aws_subnet.wordpress_subnet_public_1b.id
+  route_table_id = aws_route_table.wordpress_public_route_table.id
+}
