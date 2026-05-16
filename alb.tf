@@ -46,7 +46,7 @@ resource "aws_lb_target_group" "wordpress_target_group" {
 
 #==================================================================================
 
-resource "aws_lb_listener" "wordpress_http_listener" {
+resource "aws_lb_listener" "wordpress_http_listener_http" {
   load_balancer_arn = aws_lb.wordpress_alb.arn
   port              = 80
   protocol          = "HTTP"
@@ -57,5 +57,18 @@ resource "aws_lb_listener" "wordpress_http_listener" {
   }
 }
 
+resource "aws_lb_listener" "wordpress_listener_https" {
+  load_balancer_arn = aws_lb.wordpress_alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.cert.arn
 
-# ssl_policy e certificate_arn são usados apenas para listeners HTTPS na porta 443 - Mysql.
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.wordpress_target_group.arn
+  }
+}
+
+
+# ssl_policy e certificate_arn são usados apenas para listeners HTTPS na porta 443.
