@@ -29,6 +29,11 @@ resource "aws_route_table" "wordpress_public_route_table" {
 resource "aws_route_table" "wordpress_private_route_table" {
   vpc_id = aws_vpc.wordpress_vpc.id
 
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gateway_main.id
+  }
+
   tags = merge(
     local.tags,
     {

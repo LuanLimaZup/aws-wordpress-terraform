@@ -47,6 +47,11 @@ resource "aws_lb_target_group" "wordpress_target_group" {
 #==================================================================================
 
 resource "aws_lb_listener" "wordpress_http_listener_http" {
+
+  depends_on = [
+    aws_acm_certificate_validation.validation_route53_main
+  ]
+
   load_balancer_arn = aws_lb.wordpress_alb.arn
   port              = 80
   protocol          = "HTTP"
@@ -58,6 +63,11 @@ resource "aws_lb_listener" "wordpress_http_listener_http" {
 }
 
 resource "aws_lb_listener" "wordpress_listener_https" {
+
+  depends_on = [
+    aws_acm_certificate_validation.validation_route53_main
+  ]
+
   load_balancer_arn = aws_lb.wordpress_alb.arn
   port              = 443
   protocol          = "HTTPS"
