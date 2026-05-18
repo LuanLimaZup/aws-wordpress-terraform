@@ -44,6 +44,10 @@ EOF
 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ec2_ssm_profile.name
+  }
+
   monitoring {
     enabled = true
   }
