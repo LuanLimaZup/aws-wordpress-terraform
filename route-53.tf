@@ -8,8 +8,8 @@ resource "aws_route53_record" "domain_route53" {
   type    = "A"
 
   alias {
-    name                   = aws_lb.wordpress_alb.dns_name
-    zone_id                = aws_lb.wordpress_alb.zone_id
+    name                   = module.alb.alb_dns_name
+    zone_id                = module.alb.alb_zone_id
     evaluate_target_health = true
   }
 }

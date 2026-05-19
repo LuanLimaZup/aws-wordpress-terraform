@@ -12,7 +12,7 @@ resource "aws_db_instance" "wordpress_rds" {
 
   db_subnet_group_name = aws_db_subnet_group.wordpress_rds_subnet_group.name
 
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  vpc_security_group_ids = [module.security_group.rds_security_group_id]
 
   publicly_accessible = false
 

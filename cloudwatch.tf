@@ -11,8 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_asg" {
   treat_missing_data  = "notBreaching"
 
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.wordpress_auto_scaling_group.name
-  }
+  AutoScalingGroupName = module.auto_scaling_group.autoscaling_group_name }
 
   tags = merge(
     local.tags,
@@ -36,8 +35,7 @@ resource "aws_cloudwatch_metric_alarm" "low_cpu_asg" {
   treat_missing_data  = "notBreaching"
 
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.wordpress_auto_scaling_group.name
-  }
+  AutoScalingGroupName = module.auto_scaling_group.autoscaling_group_name }
 
   tags = merge(
     local.tags, {
