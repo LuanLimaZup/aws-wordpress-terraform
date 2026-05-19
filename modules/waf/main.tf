@@ -1,6 +1,6 @@
 resource "aws_wafv2_web_acl" "wordpress_waf" {
   name        = "wordpress-waf"
-  description = "Waf para proteger cloudfront wordpress."
+  description = "WAF para proteger CloudFront WordPress"
   scope       = "CLOUDFRONT"
 
   default_action {
@@ -8,7 +8,7 @@ resource "aws_wafv2_web_acl" "wordpress_waf" {
   }
 
   rule {
-    name     = "AWSManagedRulesCommonRuleSet" #protege contra Sql injections e ataques comuns
+    name     = "AWSManagedRulesCommonRuleSet"
     priority = 1
 
     override_action {
@@ -36,7 +36,8 @@ resource "aws_wafv2_web_acl" "wordpress_waf" {
   }
 
   tags = merge(
-    local.tags, {
+    var.tags,
+    {
       Name = "wordpress-waf"
     }
   )

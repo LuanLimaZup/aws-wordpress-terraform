@@ -8,12 +8,12 @@ variable "vpc_name" {
   description = "Nome da VPC"
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "Tags padrão do projeto"
-}
-
 variable "region" {
   type        = string
   description = "Região AWS usada para definir as AZs"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags padrão do projeto"
 }

@@ -1,7 +1,8 @@
 resource "aws_cloudfront_distribution" "wordpress_cdn" {
-  web_acl_id = aws_wafv2_web_acl.wordpress_waf.arn
+  web_acl_id = var.web_acl_arn
+
   origin {
-    domain_name = aws_lb.wordpress_alb.dns_name
+    domain_name = var.alb_dns_name
     origin_id   = "wordpress-alb-origin"
 
     custom_origin_config {
@@ -12,11 +13,9 @@ resource "aws_cloudfront_distribution" "wordpress_cdn" {
     }
   }
 
-
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "Cloundfront para wordpress ALB"
-
+  comment         = "CloudFront para WordPress ALB"
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -31,7 +30,6 @@ resource "aws_cloudfront_distribution" "wordpress_cdn" {
       }
     }
 
-    #WordPress dinâmico costuma quebrar fácil com cache agressivo. ttl desativado
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 0
@@ -51,9 +49,9 @@ resource "aws_cloudfront_distribution" "wordpress_cdn" {
   }
 
   tags = merge(
-    local.tags, {
+    var.tags,
+    {
       Name = "wordpress-cloudfront"
     }
   )
-
 }

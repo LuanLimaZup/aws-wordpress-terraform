@@ -1,7 +1,7 @@
 resource "aws_launch_template" "wordpress_launch_template" {
   name_prefix   = "wordpress-lt-"
-  image_id      = "ami-0a59ec92177ec3fad"
-  instance_type = "t3.micro"
+  image_id      = var.image_id
+  instance_type = var.instance_type
 
   user_data = base64encode(<<-EOF
 #!/bin/bash
@@ -22,9 +22,9 @@ systemctl start httpd
 
 mkdir -p /var/www/html
 
-mount -t efs ${aws_efs_file_system.wordpress_efs.id}:/ /var/www/html
+mount -t efs ${var.efs_id}:/ /var/www/html
 
-echo "${aws_efs_file_system.wordpress_efs.id}:/ /var/www/html efs defaults,_netdev 0 0" >> /etc/fstab
+echo "${var.efs_id}:/ /var/www/html efs defaults,_netdev 0 0" >> /etc/fstab
 
 cd /tmp
 
@@ -42,10 +42,10 @@ systemctl restart httpd
 EOF
   )
 
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  vpc_security_group_ids = [var.ec2_security_group_id]
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ec2_ssm_profile.name
+    name = var.iam_instance_profile_name
   }
 
   monitoring {
@@ -56,7 +56,7 @@ EOF
     resource_type = "instance"
 
     tags = merge(
-      local.tags,
+      var.tags,
       {
         Name = "wordpress-ec2"
       }
